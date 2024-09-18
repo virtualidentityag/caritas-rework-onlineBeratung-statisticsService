@@ -310,12 +310,6 @@ components:
             sessionDataInitializing:
               allOf:
                 - $ref: '#/components/schemas/SessionDataInitializingDTO'
-            initializeFeedbackChat:
-              type: boolean
-              example: true
-            isPeerChat:
-              type: boolean
-              example: true
             roles:
               $ref: '#/components/schemas/RolesDTO'
             notifications:
@@ -375,12 +369,6 @@ components:
           type: boolean
           example: false
         sendFurtherStepsMessage:
-          type: boolean
-          example: true
-        initializeFeedbackChat:
-          type: boolean
-          example: true
-        isPeerChat:
           type: boolean
           example: true
         furtherInformation:

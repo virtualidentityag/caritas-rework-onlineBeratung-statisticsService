@@ -1,26 +1,34 @@
 package de.caritas.cob.statisticsservice.api.helper;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
 public class AuthenticatedUserTest {
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void AuthenticatedUser_Should_ThrowNullPointerExceptionWhenArgumentsAreNull() {
-    new AuthenticatedUser(null, null, null);
+    assertThrows(NullPointerException.class, () -> {
+      new AuthenticatedUser(null, null, null);
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void AuthenticatedUser_Should_ThrowNullPointerExceptionWhenUserIdIsNull() {
-    AuthenticatedUser authenticatedUser = new AuthenticatedUser();
-    authenticatedUser.setUserId(null);
+    assertThrows(NullPointerException.class, () -> {
+      AuthenticatedUser authenticatedUser = new AuthenticatedUser();
+      authenticatedUser.setUserId(null);
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void AuthenticatedUser_Should_ThrowNullPointerExceptionWhenUsernameIsNull() {
-    AuthenticatedUser authenticatedUser = new AuthenticatedUser();
-    authenticatedUser.setUsername(null);
+    assertThrows(NullPointerException.class, () -> {
+      AuthenticatedUser authenticatedUser = new AuthenticatedUser();
+      authenticatedUser.setUsername(null);
+    });
   }
 }

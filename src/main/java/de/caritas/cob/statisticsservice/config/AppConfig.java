@@ -1,5 +1,7 @@
 package de.caritas.cob.statisticsservice.config;
 
+import org.keycloak.adapters.KeycloakConfigResolver;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -24,5 +26,15 @@ public class AppConfig {
     validatorFactoryBean.setValidationMessageSource(messageSource);
     return validatorFactoryBean;
   }
+
+  /**
+   * Use the KeycloakSpringBootConfigResolver to be able to save the Keycloak settings in the spring
+   * application properties.
+   */
+  @Bean
+  public KeycloakConfigResolver keyCloakConfigResolver() {
+    return new KeycloakSpringBootConfigResolver();
+  }
+
 
 }

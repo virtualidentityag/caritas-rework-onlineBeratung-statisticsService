@@ -7,10 +7,10 @@ import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.Sta
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.StatisticsEventBuilder;
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.meta.CreateMessageMetaData;
 import de.caritas.cob.statisticsservice.userstatisticsservice.generated.web.model.SessionStatisticsResultDTO;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 
@@ -23,85 +23,96 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StatisticsEventBuilderTest {
 
   @Mock UserStatisticsService userStatisticsService;
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void build_Should_ThrowNullPointerException_WhenEventTypeIsNull() {
+    assertThrows(NullPointerException.class, () -> {
 
-    StatisticsEventBuilder builder =
-        StatisticsEventBuilder.getInstance(
-            () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
-    builder
-        .withTimestamp(Instant.now())
-        .withUserId(CONSULTANT_ID)
-        .withUserRole(UserRole.CONSULTANT)
-        .build();
+      StatisticsEventBuilder builder =
+          StatisticsEventBuilder.getInstance(
+              () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
+      builder
+          .withTimestamp(Instant.now())
+          .withUserId(CONSULTANT_ID)
+          .withUserRole(UserRole.CONSULTANT)
+          .build();
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void build_Should_ThrowNullPointerException_WhenTimestampIsNull() {
+    assertThrows(NullPointerException.class, () -> {
 
-    StatisticsEventBuilder builder =
-        StatisticsEventBuilder.getInstance(
-            () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
-    builder
-        .withEventType(EventType.ASSIGN_SESSION)
-        .withUserId(CONSULTANT_ID)
-        .withUserRole(UserRole.CONSULTANT)
-        .build();
+      StatisticsEventBuilder builder =
+          StatisticsEventBuilder.getInstance(
+              () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
+      builder
+          .withEventType(EventType.ASSIGN_SESSION)
+          .withUserId(CONSULTANT_ID)
+          .withUserRole(UserRole.CONSULTANT)
+          .build();
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void build_Should_ThrowNullPointerException_WhenUserIdIsNull() {
+    assertThrows(NullPointerException.class, () -> {
 
-    StatisticsEventBuilder builder =
-        StatisticsEventBuilder.getInstance(
-            () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
-    builder
-        .withEventType(EventType.ASSIGN_SESSION)
-        .withTimestamp(Instant.now())
-        .withUserRole(UserRole.CONSULTANT)
-        .build();
+      StatisticsEventBuilder builder =
+          StatisticsEventBuilder.getInstance(
+              () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
+      builder
+          .withEventType(EventType.ASSIGN_SESSION)
+          .withTimestamp(Instant.now())
+          .withUserRole(UserRole.CONSULTANT)
+          .build();
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void build_Should_ThrowNullPointerException_WhenUserRoleIsNull() {
+    assertThrows(NullPointerException.class, () -> {
 
-    StatisticsEventBuilder builder =
-        StatisticsEventBuilder.getInstance(
-            () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
-    builder
-        .withEventType(EventType.ASSIGN_SESSION)
-        .withTimestamp(Instant.now())
-        .withUserId(CONSULTANT_ID)
-        .build();
+      StatisticsEventBuilder builder =
+          StatisticsEventBuilder.getInstance(
+              () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
+      builder
+          .withEventType(EventType.ASSIGN_SESSION)
+          .withTimestamp(Instant.now())
+          .withUserId(CONSULTANT_ID)
+          .build();
+    });
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void build_Should_ThrowNullPointerException_WhenRetrievedSessionHasNoId() {
+    assertThrows(NullPointerException.class, () -> {
 
-    SessionStatisticsResultDTO session = buildSessionStatisticsResultDto();
-    session.id(null);
+      SessionStatisticsResultDTO session = buildSessionStatisticsResultDto();
+      session.id(null);
 
-    when(userStatisticsService.retrieveSessionViaSessionId(SESSION_ID))
-        .thenReturn(session);
+      when(userStatisticsService.retrieveSessionViaSessionId(SESSION_ID))
+          .thenReturn(session);
 
-    StatisticsEventBuilder builder =
-        StatisticsEventBuilder.getInstance(
-            () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
-    builder
-        .withEventType(EventType.ASSIGN_SESSION)
-        .withTimestamp(Instant.now())
-        .withUserId(CONSULTANT_ID)
-        .withUserRole(UserRole.CONSULTANT)
-        .build();
+      StatisticsEventBuilder builder =
+          StatisticsEventBuilder.getInstance(
+              () -> userStatisticsService.retrieveSessionViaSessionId(SESSION_ID));
+      builder
+          .withEventType(EventType.ASSIGN_SESSION)
+          .withTimestamp(Instant.now())
+          .withUserId(CONSULTANT_ID)
+          .withUserRole(UserRole.CONSULTANT)
+          .build();
+    });
   }
 
   @Test
@@ -185,15 +196,17 @@ public class StatisticsEventBuilderTest {
     verifyNoInteractions(userStatisticsService);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void buildShouldIllegalArgExceptionOnMissingSessionAndNotStartVideoCallEvent() {
-    StatisticsEventBuilder.getInstance()
-            .withEventType(EventType.ASSIGN_SESSION)
-            .withTimestamp(Instant.now())
-            .withUserId(CONSULTANT_ID)
-            .withUserRole(UserRole.CONSULTANT)
-            .withMetaData(new Object())
-            .build();
+    assertThrows(IllegalArgumentException.class, () -> {
+      StatisticsEventBuilder.getInstance()
+          .withEventType(EventType.ASSIGN_SESSION)
+          .withTimestamp(Instant.now())
+          .withUserId(CONSULTANT_ID)
+          .withUserRole(UserRole.CONSULTANT)
+          .withMetaData(new Object())
+          .build();
+    });
   }
 
   private SessionStatisticsResultDTO buildSessionStatisticsResultDto() {

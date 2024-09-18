@@ -7,14 +7,15 @@ import de.caritas.cob.statisticsservice.api.service.UserStatisticsService;
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.StatisticsEvent;
 import de.caritas.cob.statisticsservice.userstatisticsservice.generated.web.model.SessionStatisticsResultDTO;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -32,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-public class AssignSessionListenerTest {
+@ExtendWith(SpringExtension.class)
+class AssignSessionListenerTest {
 
   @InjectMocks
   AssignSessionListener assignSessionListener;
@@ -42,7 +43,7 @@ public class AssignSessionListenerTest {
   @Captor ArgumentCaptor<StatisticsEvent> statisticsEventCaptor;
 
   @Test
-  public void receiveMessage_Should_saveFullEventToMongoDb() {
+  void receiveMessage_Should_saveFullEventToMongoDb() {
     // given
     SessionStatisticsResultDTO sessionStatisticsResultDTO = buildResultDto();
     when(userStatisticsService.retrieveSessionViaSessionId(SESSION_ID))
@@ -77,7 +78,7 @@ public class AssignSessionListenerTest {
   }
 
   @Test
-  public void receiveMessage_Should_savePartialEventToMongoDb() {
+  void receiveMessage_Should_savePartialEventToMongoDb() {
     var sessionStatisticsResultDTO = buildResultDto();
     when(userStatisticsService.retrieveSessionViaSessionId(SESSION_ID))
             .thenReturn(sessionStatisticsResultDTO);

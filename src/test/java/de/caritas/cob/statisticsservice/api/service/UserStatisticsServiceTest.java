@@ -9,16 +9,19 @@ import static org.mockito.Mockito.when;
 
 import de.caritas.cob.statisticsservice.api.service.securityheader.SecurityHeaderSupplier;
 import de.caritas.cob.statisticsservice.api.service.securityheader.TenantHeaderSupplier;
+import de.caritas.cob.statisticsservice.config.apiclient.UserStatisticsApiControllerFactory;
 import de.caritas.cob.statisticsservice.userstatisticsservice.generated.web.UserStatisticsControllerApi;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
-public class UserStatisticsServiceTest {
+@ExtendWith(MockitoExtension.class)
+class UserStatisticsServiceTest {
 
   @InjectMocks
   UserStatisticsService userStatisticsService;
@@ -29,8 +32,16 @@ public class UserStatisticsServiceTest {
   @Mock
   TenantHeaderSupplier tenantHeaderSupplier;
 
+  @Mock
+  UserStatisticsApiControllerFactory userStatisticsApiControllerFactory;
+
+  @BeforeEach
+  void setup() {
+    when(userStatisticsApiControllerFactory.createControllerApi()).thenReturn(userStatisticsControllerApi);
+  }
+
   @Test
-  public void retrieveSessionViaRcGroupId_Should_RetrieveSessionViaUserStatisticsControllerApi() {
+  void retrieveSessionViaRcGroupId_Should_RetrieveSessionViaUserStatisticsControllerApi() {
 
     var headers = new HttpHeaders();
     when(securityHeaderSupplier.getCsrfHttpHeaders()).thenReturn(headers);
@@ -40,7 +51,7 @@ public class UserStatisticsServiceTest {
   }
 
   @Test
-  public void retrieveSessionViaSessionId_Should_RetrieveSessionViaUserStatisticsControllerApi() {
+  void retrieveSessionViaSessionId_Should_RetrieveSessionViaUserStatisticsControllerApi() {
 
     var headers = new HttpHeaders();
     when(securityHeaderSupplier.getCsrfHttpHeaders()).thenReturn(headers);

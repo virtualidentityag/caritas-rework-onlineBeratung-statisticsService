@@ -8,9 +8,9 @@ import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.SESS
 import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.VIDEO_CALL_UUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 import de.caritas.cob.statisticsservice.api.model.EventType;
 import de.caritas.cob.statisticsservice.api.model.StopVideoCallStatisticsEventMessage;
@@ -21,14 +21,15 @@ import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.Sta
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.User;
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.meta.StartVideoCallMetaData;
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.meta.VideoCallStatus;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -37,9 +38,9 @@ import org.mockito.Mockito;
 import org.springframework.amqp.AmqpException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StopVideoCallListenerTest {
 
   @InjectMocks
@@ -52,7 +53,7 @@ public class StopVideoCallListenerTest {
   @Test
   public void receiveMessage_Should_saveEventToMongoDb() {
     // given
-    when(mongoTemplate.find(Mockito.any(Query.class), eq(StatisticsEvent.class)))
+    Mockito.when(mongoTemplate.find(Mockito.any(Query.class), Mockito.eq(StatisticsEvent.class)))
         .thenReturn(buildMongoResultWithOneStatisticsEvent());
 
     StopVideoCallStatisticsEventMessage stopVideoCallStatisticsEventMessage = buildEventMessage();
@@ -91,28 +92,32 @@ public class StopVideoCallListenerTest {
     assertThat(startVideoCallMetaData.getDuration(), is(duration));
   }
 
-  @Test(expected = AmqpException.class)
+  @Test
   public void receiveMessage_Should_ThrowAmqpException_WhenMoreThanOneStartVideoCallEventWasFound() {
-    // given
-    when(mongoTemplate.find(Mockito.any(Query.class), eq(StatisticsEvent.class)))
-        .thenReturn(buildMongoResultWithTwoStatisticsEvent());
+    assertThrows(AmqpException.class, () -> {
+      // given
+      Mockito.when(mongoTemplate.find(Mockito.any(Query.class), eq(StatisticsEvent.class)))
+          .thenReturn(buildMongoResultWithTwoStatisticsEvent());
 
-    StopVideoCallStatisticsEventMessage stopVideoCallStatisticsEventMessage = buildEventMessage();
+      StopVideoCallStatisticsEventMessage stopVideoCallStatisticsEventMessage = buildEventMessage();
 
-    // when, then
-    stopVideoCallListener.receiveMessage(stopVideoCallStatisticsEventMessage);
+      // when, then
+      stopVideoCallListener.receiveMessage(stopVideoCallStatisticsEventMessage);
+    });
   }
 
-  @Test(expected = AmqpException.class)
+  @Test
   public void receiveMessage_Should_ThrowAmqpException_WhenNoStartVideoCallEventWasFound() {
-    // given
-    when(mongoTemplate.find(Mockito.any(Query.class), eq(StatisticsEvent.class)))
-        .thenReturn(Collections.emptyList());
+    assertThrows(AmqpException.class, () -> {
+      // given
+      Mockito.when(mongoTemplate.find(Mockito.any(Query.class), eq(StatisticsEvent.class)))
+          .thenReturn(Collections.emptyList());
 
-    StopVideoCallStatisticsEventMessage stopVideoCallStatisticsEventMessage = buildEventMessage();
+      StopVideoCallStatisticsEventMessage stopVideoCallStatisticsEventMessage = buildEventMessage();
 
-    // when, then
-    stopVideoCallListener.receiveMessage(stopVideoCallStatisticsEventMessage);
+      // when, then
+      stopVideoCallListener.receiveMessage(stopVideoCallStatisticsEventMessage);
+    });
   }
 
   public List<StatisticsEvent> buildMongoResultWithOneStatisticsEvent() {
