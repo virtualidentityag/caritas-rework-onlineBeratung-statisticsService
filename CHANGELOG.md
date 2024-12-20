@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/compare/v1.12.0...v1.13.0) (2024-12-20)
+
+
+### Features
+
+* integrate with spring cloud sleuth and zipkin ([2b69b3e](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/2b69b3ee2e9251f6107c5f444d449966d410462c))
+* upgrade to spring boot 2.7.X ([85a9a49](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/85a9a49bb903df6d3a9093bfcb6961f1331e9a4c))
+* upgrade to spring boot 2.7.X ([ba0fceb](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/ba0fcebe22142100b8f3a4d3ff1c2726a82148c6))
+* upgrade to spring boot 2.7.X ([e40c740](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/e40c740e82cab079e7985dc2d798214369189263))
+* upgrade to spring boot 2.7.X ([1637afe](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/1637afeab8c1226ac7303845d3f2fd833aafe468))
+
+
+### Bug Fixes
+
+* CARITAS-243 ([9d7143b](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/9d7143bc74d04701e4bb7b452ec9b2088f2432d1))
+* CARITAS-243 ([352b5cb](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/352b5cb19aebe9be9c7edf7bc519bafbe5c18469))
+* CARITAS-243 - remove initializeFeedbackChat and isPeerChat from consultingtypeservice.yaml ([3cd923f](https://github.com/CaritasDeutschland/caritas-onlineBeratung-statisticsService/commit/3cd923f6c63231a8fcd2bcdc565c97c7009c854e))
+
 ## 1.12.0 (2024-06-18)
 
 
