@@ -5,6 +5,7 @@ import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.DATE
 import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.DATE_TO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,18 +18,19 @@ import de.caritas.cob.statisticsservice.api.helper.AuthenticatedUser;
 import de.caritas.cob.statisticsservice.api.statistics.repository.StatisticsEventRepository;
 import de.caritas.cob.statisticsservice.api.statistics.repository.StatisticsEventRepository.Count;
 import de.caritas.cob.statisticsservice.api.statistics.repository.StatisticsEventRepository.Duration;
+import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StatisticsServiceTest {
 
   @InjectMocks
@@ -38,9 +40,11 @@ public class StatisticsServiceTest {
   @Mock
   AuthenticatedUser authenticatedUser;
 
-  @Test(expected = BadRequestException.class)
+  @Test
   public void fetchStatisticsData_Should_ThrowBadRequestException_WhenDateFromIsAfterDateTo() {
-    statisticsService.fetchStatisticsData(DATE_TO, DATE_FROM);
+    assertThrows(BadRequestException.class, () -> {
+      statisticsService.fetchStatisticsData(DATE_TO, DATE_FROM);
+    });
   }
 
   @Test

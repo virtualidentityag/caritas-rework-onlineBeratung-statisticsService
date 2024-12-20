@@ -9,7 +9,6 @@ import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.DATE
 import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.DATE_TO;
 import static de.caritas.cob.statisticsservice.api.testhelper.TestConstants.DATE_TO_FORMATTED;
 import static org.mockito.Mockito.when;
-import static org.powermock.reflect.Whitebox.setInternalState;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,15 +17,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import de.caritas.cob.statisticsservice.StatisticsServiceApplication;
 import de.caritas.cob.statisticsservice.api.authorization.RoleAuthorizationAuthorityMapper;
 import de.caritas.cob.statisticsservice.api.authorization.StatisticsFeatureAuthorisationService;
 import de.caritas.cob.statisticsservice.api.service.LogService;
 import de.caritas.cob.statisticsservice.api.statistics.service.RegistrationStatisticsService;
 import de.caritas.cob.statisticsservice.api.statistics.service.StatisticsService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.KeycloakConfigResolver;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +32,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(StatisticsController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@ContextConfiguration(classes = StatisticsServiceApplication.class)
-public class StatisticsControllerIT {
+@TestPropertySource(properties = "spring.profiles.active=testing")
+class StatisticsControllerIT {
 
   @Autowired
   private MockMvc mvc;
@@ -60,16 +55,14 @@ public class StatisticsControllerIT {
   @MockBean
   StatisticsFeatureAuthorisationService statisticsFeatureAuthorisationService;
 
+  @MockBean
+  KeycloakConfigResolver keycloakConfigResolver;
+
   @Mock
   private Logger logger;
 
-  @Before
-  public void setup() {
-    setInternalState(LogService.class, "LOGGER", logger);
-  }
-
   @Test
-  public void getConsultantStatistics_Should_ReturnStatisticsDataAndOk() throws Exception {
+  void getConsultantStatistics_Should_ReturnStatisticsDataAndOk() throws Exception {
 
     when(statisticsService.fetchStatisticsData(DATE_FROM, DATE_TO)).thenReturn(CONSULTANT_STATISTICS_RESPONSE_DTO);
 
@@ -81,7 +74,7 @@ public class StatisticsControllerIT {
   }
 
   @Test
-  public void getRegistrationStatistics_Should_ReturnStatisticsDataAndOk() throws Exception {
+  void getRegistrationStatistics_Should_ReturnStatisticsDataAndOk() throws Exception {
 
     when(registrationStatisticsService.fetchRegistrationStatisticsData()).thenReturn(REGISTRATION_STATISTICS_LIST_RESPONSE_DTO);
 

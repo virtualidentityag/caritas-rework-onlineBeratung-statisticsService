@@ -10,20 +10,17 @@ import de.caritas.cob.statisticsservice.StatisticsServiceApplication;
 import de.caritas.cob.statisticsservice.api.statistics.model.statisticsevent.StatisticsEvent;
 import java.io.IOException;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @DataMongoTest()
 @ContextConfiguration(classes = StatisticsServiceApplication.class)
-@RunWith(SpringRunner.class)
 @TestPropertySource(properties = "spring.profiles.active=testing")
 @TestPropertySource(properties = "multitenancy.enabled=true")
 public class StatisticsEventTenantAwareRepositoryIT {
@@ -40,7 +37,7 @@ public class StatisticsEventTenantAwareRepositoryIT {
   @Autowired
   MongoTemplate mongoTemplate;
 
-  @Before
+  @BeforeEach
   public void preFillMongoDb() throws IOException {
     mongoTemplate.dropCollection(MONGO_COLLECTION_NAME);
     ObjectMapper objectMapper = new ObjectMapper();

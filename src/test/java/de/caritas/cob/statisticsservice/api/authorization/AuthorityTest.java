@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
 import de.caritas.cob.statisticsservice.api.authorization.Authority.AuthorityValue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AuthorityTest {
 

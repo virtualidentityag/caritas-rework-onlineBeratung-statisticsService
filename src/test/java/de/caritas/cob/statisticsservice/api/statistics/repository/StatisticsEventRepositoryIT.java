@@ -22,23 +22,21 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @DataMongoTest()
 @ContextConfiguration(classes = StatisticsServiceApplication.class)
-@RunWith(SpringRunner.class)
 @TestPropertySource(properties = "spring.profiles.active=testing")
 public class StatisticsEventRepositoryIT {
+
 
   public static final String MONGODB_STATISTICS_EVENTS_JSON_FILENAME =
       "mongodb/StatisticsEvents.json";
@@ -52,7 +50,7 @@ public class StatisticsEventRepositoryIT {
   @Autowired
   MongoTemplate mongoTemplate;
 
-  @Before
+  @BeforeEach
   public void preFillMongoDb() throws IOException {
     mongoTemplate.dropCollection(MONGO_COLLECTION_NAME);
     ObjectMapper objectMapper = new ObjectMapper();
@@ -139,7 +137,7 @@ public class StatisticsEventRepositoryIT {
   }
 
   @Test
-  @Ignore("For some reason this test is failing in this test scenario caused by the event.0.startTime and event.0.endTime filters.")
+  @Disabled("For some reason this test is failing in this test scenario caused by the event.0.startTime and event.0.endTime filters.")
   public void calculateNumberOfDoneAppointmentsForConsultant_Should_ReturnCorrectNumberOfAppointments() {
     Count count = statisticsEventRepository.calculateNumbersOfDoneAppointments(CONSULTANT_ID,
         dateFromConverted, dateToConverted, dateToConverted);
